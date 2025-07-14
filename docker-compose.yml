@@ -1,0 +1,61 @@
+# Compose specification
+
+x-php-service: &php-service
+  build:
+    context: ./docker/php
+  volumes:
+    - .:/var/www/html
+
+x-mariadb_service: &mariadb_service
+  image: mariadb:latest
+  environment: &db-environment
+    MYSQL_ROOT_PASSWORD: root_password
+  healthcheck:
+    test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+    interval: 10s
+    timeout: 5s
+    retries: 5
+
+services:
+  php:
+    <<: *php-service
+    container_name: php
+    ports:
+      - '9001:9000'
+    environment:
+      - APP_ENV=development
+    networks:
+      - app-network
+
+  nginx:
+    container_name: nginx
+    image: nginx:stable-alpine
+    ports:
+      - '8080:80'
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+    environment:
+      - APP_ENV=development
+    networks:
+      - app-network
+
+  mariadb:
+    <<: *mariadb_service
+    container_name: mariadb
+    environment:
+      <<: *db-environment
+      MYSQL_DATABASE: barkochba
+      MYSQL_USER: game
+      MYSQL_PASSWORD: game
+    ports:
+      - '3306:3306'
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data: {}
+networks:
+  app-network:
