@@ -17,6 +17,15 @@ x-mariadb_service: &mariadb_service
     retries: 5
 
 services:
+  ollama:
+    image: ollama/ollama
+    ports:
+      - '11434:11434'
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - app-network
+
   php:
     <<: *php-service
     container_name: php
@@ -24,8 +33,11 @@ services:
       - '9001:9000'
     environment:
       - APP_ENV=development
+      - LLM_API_URL:"http://ollama:11434"
     networks:
       - app-network
+    depends_on:
+      - ollama
 
   nginx:
     container_name: nginx
@@ -57,5 +69,6 @@ services:
 
 volumes:
   db_data: {}
+  ollama_data: {}
 networks:
   app-network:
