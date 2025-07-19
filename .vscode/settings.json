@@ -1,0 +1,9 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "",
+        "projectKey": ""
+    },
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "eslint.validate": ["javascript"]
+}
