@@ -1,0 +1,28 @@
+{
+  "name": "barkochba-php-llm",
+  "version": "1.0.0",
+  "description": "The repository contains an example llm based game application for demonstration/educational purpose.",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/.bin/jest",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "Istvan Dobrentei",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/user-event": "^14.6.1",
+    "eslint": "^9.31.0",
+    "eslint-config-prettier": "^10.1.7",
+    "jest": "^30.0.2",
+    "jest-environment-jsdom": "^30.0.2",
+    "prettier": "^3.6.2"
+  }
+}
