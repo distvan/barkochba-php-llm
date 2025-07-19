@@ -1,0 +1,115 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  color: #333;
+}
+
+.stripe {
+  background-color: #0077cc;
+  color: white;
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.user-info {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  font-weight: bold;
+}
+
+.actions {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.new-game-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.new-game-btn:hover {
+  background-color: #218838;
+}
+
+.score-table,
+.game-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border: 1px solid #ccc;
+}
+
+.score-table th,
+.score-table td,
+.game-table th,
+.game-table td {
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.score-table th,
+.game-table th {
+  background-color: #f1f1f1;
+}
+
+.option-selector {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.option {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  border-radius: 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 0 0 2px transparent;
+}
+
+.option.selected {
+  box-shadow: 0 0 0 4px #333;
+  transform: scale(1.05);
+}
+
+.organism {
+  background-color: #4caf50;
+}
+
+.object {
+  background-color: #2196f3;
+}
+
+.concept {
+  background-color: #ff9800;
+}
