@@ -1,0 +1,8 @@
+.DS_Store
+.vscode
+.phpunit.result.cache
+src/Storage/Log
+vendor
+node_modules
+phpDocumentor.phar
+.phpdoc
