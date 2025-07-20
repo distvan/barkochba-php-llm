@@ -9,9 +9,9 @@ x-php-service: &php-service
 x-mariadb_service: &mariadb_service
   image: mariadb:latest
   environment: &db-environment
-    MYSQL_ROOT_PASSWORD: root_password
+    MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
   healthcheck:
-    test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+    test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
     interval: 10s
     timeout: 5s
     retries: 5
@@ -21,11 +21,11 @@ services:
     image: sonarqube:lts
     container_name: sonarqube
     ports:
-      - "9100:9000"
+      - '9100:9000'
     environment:
       - SONAR_JDBC_URL=jdbc:postgresql://postgres:5432/sonar
       - SONAR_JDBC_USERNAME=sonar
-      - SONAR_JDBC_PASSWORD=sonar
+      - SONAR_JDBC_PASSWORD=${SONAR_JDBC_PASSWORD}
     depends_on:
       - postgres
 
@@ -35,10 +35,10 @@ services:
     environment:
       - POSTGRES_USER=sonar
       - POSTGRES_PASSWORD=sonar
-      - POSTGRES_DB=sonar
+      - POSTGRES_DB=${POSTGRES_PASSWORD}
     volumes:
       - postgresql_data:/var/lib/postgresql/data
-  
+
   ollama:
     image: ollama/ollama
     ports:
@@ -86,7 +86,7 @@ services:
       <<: *db-environment
       MYSQL_DATABASE: barkochba
       MYSQL_USER: game
-      MYSQL_PASSWORD: game
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - '3306:3306'
     volumes:
@@ -98,6 +98,16 @@ services:
     volumes:
       - .:/var/www/html
     command: npm install
+
+  dbmate:
+    image: amacneil/dbmate
+    environment:
+      - DATABASE_URL=mysql://game:${MYSQL_PASSWORD}@mariadb:3306/barkochba
+    command: up
+    volumes:
+      - ./db/migrations:/db/migrations
+    depends_on:
+      - mariadb
 
 volumes:
   db_data: {}
