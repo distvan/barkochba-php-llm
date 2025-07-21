@@ -2,7 +2,7 @@ export function getMockTemplate() {
   return `
     <div id="dashboard" data-api-url="http://fakeurl">
         <div class="option-selector">
-            <div data-value="organism" class="option organism selected">Organism</div>
+            <div data-value="organism" class="option organism selected">Living being</div>
             <div data-value="object" class="option object">Object</div>
             <div data-value="concept" class="option concept">Concept</div>
         </div>
