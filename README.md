@@ -15,9 +15,12 @@ DB Migration related commands:
 for unit testing:
 
 - create test database and granting access right to it for user:
+
+  ```
   CREATE DATABASE IF NOT EXISTS barkochba_test;
-  GRANT ALL PRIVILEGES ON barkochba_test.\* TO 'game'@'%';
+  GRANT ALL PRIVILEGES ON barkochba_test.* TO 'game'@'%';
   FLUSH PRIVILEGES;
+  ```
 
 - docker compose run --rm dbmate -e TEST_DATABASE_URL --no-dump-schema up
 - docker compose run --rm php composer test
