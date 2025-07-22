@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace App\Domain\Contracts;
 
-use App\Domain\Entities\User\NullUser;
-use App\Domain\Entities\User\User;
+use App\Domain\Game\GameCollection;
 
 /**
- * UserRepository Interface
+ * GameRepository Interface
  *
  * @package App\Domain\Contracts
  * @author  Istvan Dobrentei <info@dobrenteiistvan.hu>
  * @link    https://www.en.dobrenteiistvan.hu
  */
-interface UserRepository
+interface GameRepository
 {
-    public function findById(int $userId): User|NullUser;
+    public function findHighestScoredGames(int $limit = 10): GameCollection;
 }

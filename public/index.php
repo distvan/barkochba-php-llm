@@ -43,7 +43,7 @@ $kernel->registerProviders($config->get('providers'));
 
 //instantiate components
 $router = new Router();
-$router->add('GET', '/', function(ServerRequestInterface $request) use ($container) {
+$router->add('GET', '/', function(ServerRequestInterface $request) {
     $controller = new IndexController(
         new View(__DIR__ . '/../src/Http/Views', __DIR__ . '/../src/Http/Views/layouts')
     );
