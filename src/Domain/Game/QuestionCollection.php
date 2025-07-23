@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Game;
 
-use App\Domain\Entities\Question;
+use App\Domain\Entities\Question\Question;
 use ArrayIterator;
 use IteratorAggregate;
 

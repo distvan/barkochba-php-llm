@@ -35,7 +35,8 @@ class GameRepository implements GameRepositoryInterface
     {
         $games = [];
         $stmt = $this->pdo->prepare('SELECT * FROM games ORDER BY score DESC LIMIT :limit');
-        $stmt->execute(['limit' => $limit]);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
         while ($row = $stmt->fetch()) {
             $games[] = new Game(
                 id: (int)$row['id'],

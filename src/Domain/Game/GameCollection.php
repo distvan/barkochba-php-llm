@@ -37,4 +37,15 @@ class GameCollection implements IteratorAggregate
     {
         return new ArrayIterator($this->games);
     }
+
+    /**
+     * Count
+     * Get the count of games
+     *
+     * @return integer
+     */
+    public function count():int
+    {
+        return count($this->games);
+    }
 }

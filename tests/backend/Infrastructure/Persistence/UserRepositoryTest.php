@@ -9,7 +9,7 @@ use Tests\backend\Infrastructure\Persistence\DatabaseTestCase;
 
 class UserRepositoryTest extends DatabaseTestCase
 {
-    public function testFindByUserIdWhenUserExists(): void
+    public function testFindByUserIdWhenUserExist(): void
     {
         $repository = new UserRepository($this->pdo);
         $user = $repository->findById(1);

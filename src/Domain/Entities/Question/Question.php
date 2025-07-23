@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Entities;
+namespace App\Domain\Entities\Question;
 
 /**
  * Question Entity Class

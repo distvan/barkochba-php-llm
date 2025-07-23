@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence;
 
 use App\Domain\Contracts\QuestionRepository as QuestionRepositoryInterface;
-use App\Domain\Entities\Question;
+use App\Domain\Entities\Question\Question;
 use App\Domain\Game\QuestionCollection;
 use PDO;
 
@@ -25,13 +25,19 @@ class QuestionRepository implements QuestionRepositoryInterface
      */
     public function __construct(private PDO $pdo) {}
 
+    /**
+     * findQuestionsByGameId
+     *
+     * @param integer $gameId
+     * @return QuestionCollection
+     */
     public function findQuestionsByGameId(int $gameId): QuestionCollection
     {
         $questions = [];
         $stmt = $this->pdo->prepare('SELECT * FROM questions WHERE game_id=:game_id');
         $stmt->execute(['game_id' => $gameId]);
         while ($row = $stmt->fetch()) {
-            $questions = new Question(
+            $questions[] = new Question(
                 id: (int)$row['id'],
                 gameId: (int)$row['game_id'],
                 question: $row['question'],

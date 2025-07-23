@@ -1,6 +1,6 @@
 .DS_Store
 .phpunit.result.cache
-src/Storage/Log
+src/Storage/Log/*.log
 vendor
 node_modules
 phpDocumentor.phar
