@@ -33,4 +33,7 @@ export class InputQuery extends DashboardElement {
       this.button.click();
     }
   }
+  show() {
+    this.element.style.display = 'flex';
+  }
 }
