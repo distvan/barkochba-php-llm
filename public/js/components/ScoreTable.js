@@ -18,6 +18,7 @@ export class ScoreTable extends DashboardElement {
     this.gameHistoryService = gameHistoryService;
     this.element = this.dashboard.container.querySelector('.score-table');
     this.tbody = this.element.querySelector('tbody');
+    this.hide();
   }
 
   /**
@@ -27,6 +28,7 @@ export class ScoreTable extends DashboardElement {
     const data = await this.gameHistoryService.getGameDataJsonArray();
     if (Array.isArray(data) && data.length !== 0) {
       this.delete();
+      this.show();
       let number = 0;
       data.forEach((item) => {
         number++;

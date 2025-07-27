@@ -18,6 +18,7 @@ export class GameTable extends DashboardElement {
     this.questionService = questionService;
     this.element = this.dashboard.container.querySelector('.game-table');
     this.tbody = this.element.querySelector('tbody');
+    this.hide();
   }
 
   /**
@@ -47,5 +48,12 @@ export class GameTable extends DashboardElement {
         this.tbody.appendChild(row);
       });
     }
+  }
+
+  /**
+   * Show the element
+   */
+  show() {
+    this.element.style.display = 'inline-table';
   }
 }

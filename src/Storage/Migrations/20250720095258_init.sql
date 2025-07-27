@@ -11,6 +11,7 @@ CREATE TABLE games (
     user_id INT NOT NULL,
     start_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     end_date DATETIME NULL,
+    category VARCHAR(10) NOT NULL,
     score INT UNSIGNED DEFAULT 0,
     CONSTRAINT fk_user
         FOREIGN KEY (user_id)

@@ -14,6 +14,8 @@
 declare(strict_types=1);
 
 use App\Application\Application;
+use App\Http\Controllers\GameHistoryController;
+use App\Http\Controllers\GameController;
 use App\Infrastructure\Container\Container;
 use App\Infrastructure\Http\Dispatcher;
 use App\Infrastructure\Http\Routing\Router;
@@ -21,6 +23,7 @@ use App\Shared\Logging\LoggerFactory;
 use Psr\Http\Message\ServerRequestInterface;
 use App\Http\Controllers\IndexController;
 use App\Infrastructure\Kernel\Kernel;
+use App\Infrastructure\Persistence\GameRepository;
 use App\Shared\Config\Config;
 use App\Shared\View;
 use Nyholm\Psr7\Factory\Psr17Factory;
@@ -46,6 +49,20 @@ $router = new Router();
 $router->add('GET', '/', function(ServerRequestInterface $request) {
     $controller = new IndexController(
         new View(__DIR__ . '/../src/Http/Views', __DIR__ . '/../src/Http/Views/layouts')
+    );
+    return $controller($request);
+});
+
+$router->add('GET', '/game-history', function(ServerRequestInterface $request) use($container) {
+    $controller = new GameHistoryController(
+        new GameRepository($container->get(PDO::class))
+    );
+    return $controller($request);
+});
+
+$router->add('POST', '/game-start', function(ServerRequestInterface $request) use($container) {
+    $controller = new GameController(
+        new GameRepository($container->get(PDO::class))
     );
     return $controller($request);
 });

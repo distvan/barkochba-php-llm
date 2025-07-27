@@ -7,7 +7,9 @@ namespace App\Infrastructure\Persistence;
 use App\Domain\Contracts\GameRepository as GameRepositoryInterface;
 use App\Domain\Entities\Game;
 use App\Domain\Game\GameCollection;
+use DateTime;
 use PDO;
+use PDOException;
 
 /**
  * GameRepository class
@@ -48,5 +50,28 @@ class GameRepository implements GameRepositoryInterface
         }
 
         return new GameCollection($games);
+    }
+
+    /**
+     * Create a new game
+     *
+     * @param integer $userId
+     * @return integer gameId
+     */
+    public function createNewGame(int $userId, string $category): int
+    {
+        $now = new DateTime();
+        try{
+            $stmt = $this->pdo->prepare('INSERT INTO games (user_id, start_date, category) VALUES (:user_id, :start_date, :category)');
+            $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+            $stmt->bindValue(':start_date', $now->format('Y-m-d H:i:s'), PDO::PARAM_STR);
+            $stmt->bindValue(':category', $category, PDO::PARAM_STR);
+            $stmt->execute();
+            return (int)$this->pdo->lastInsertId();
+        } catch (PDOException $e) {
+            echo $userId.'-- '.$category;
+            echo $e->getMessage();
+            return 0;
+        }
     }
 }

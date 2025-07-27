@@ -111,6 +111,8 @@ services:
       - ./src/Storage/Migrations:/db/migrations
     depends_on:
       - mariadb
+    networks:
+      - app-network
 
 volumes:
   db_data: {}

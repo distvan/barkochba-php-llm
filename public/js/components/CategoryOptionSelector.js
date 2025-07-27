@@ -21,6 +21,7 @@ export class CategoryOptionSelector extends DashboardElement {
         this.selected = option.dataset.value;
       }
     });
+    this.hide();
   }
 
   /**
@@ -39,5 +40,12 @@ export class CategoryOptionSelector extends DashboardElement {
    */
   getSelected() {
     return this.selected;
+  }
+
+  /**
+   * Show the element
+   */
+  show() {
+    this.element.style.display = 'flex';
   }
 }

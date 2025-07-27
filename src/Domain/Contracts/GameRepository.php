@@ -16,4 +16,5 @@ use App\Domain\Game\GameCollection;
 interface GameRepository
 {
     public function findHighestScoredGames(int $limit = 10): GameCollection;
+    public function createNewGame(int $userId, string $category): int;
 }

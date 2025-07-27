@@ -48,4 +48,14 @@ class GameCollection implements IteratorAggregate
     {
         return count($this->games);
     }
+
+    /**
+     * toArray
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->games;
+    }
 }

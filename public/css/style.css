@@ -38,7 +38,8 @@ body {
   margin-bottom: 1.5rem;
 }
 
-.new-game-btn {
+.new-game-btn,
+.start-game-btn {
   background-color: #28a745;
   color: white;
   padding: 0.6rem 1.2rem;
@@ -48,7 +49,8 @@ body {
   cursor: pointer;
 }
 
-.new-game-btn:hover {
+.new-game-btn:hover,
+start-game-btn:hover {
   background-color: #218838;
 }
 
@@ -112,4 +114,40 @@ body {
 
 .concept {
   background-color: #ff9800;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 300px;
+}
+
+.input-wrapper input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+.input-wrapper button {
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  transition: background 0.2s ease;
+}
+
+.input-wrapper button:hover {
+  background-color: #ddd;
+}
+
+.input-wrapper svg {
+  width: 20px;
+  height: 20px;
+  fill: #555;
 }

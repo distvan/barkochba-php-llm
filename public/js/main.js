@@ -1,5 +1,6 @@
-import { Dashboard } from "./components/Dashboard.js";
+import { Dashboard } from './components/Dashboard.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    let dashboard = new Dashboard();
+  let dashboard = new Dashboard();
+  dashboard.scoreTable.refresh();
 });

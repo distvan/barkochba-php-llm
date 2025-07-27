@@ -8,10 +8,14 @@ use Tests\backend\Infrastructure\Persistence\DatabaseTestCase;
 
 class GameRepositoryTest extends DatabaseTestCase
 {
+    private GameRepository $gameRepository;
+    public function setUp():void {
+        parent::setUp();
+        $this->gameRepository = new GameRepository($this->pdo);
+    }
     public function testFindHighestScoredGamesWhenExist(): void
     {
-        $repository = new GameRepository($this->pdo);
-        $collection = $repository->findHighestScoredGames();
+        $collection = $this->gameRepository->findHighestScoredGames();
         $this->assertInstanceOf(GameCollection::class, $collection);
         $this->assertEquals(2, $collection->count());
     }
@@ -19,9 +23,14 @@ class GameRepositoryTest extends DatabaseTestCase
     public function testFindHighestScoredGamesWhenNotExist(): void
     {
         $this->deleteAll();
-        $repository = new GameRepository($this->pdo);
-        $collection = $repository->findHighestScoredGames();
+        $collection = $this->gameRepository->findHighestScoredGames();
         $this->assertInstanceOf(GameCollection::class, $collection);
         $this->assertEquals(0, $collection->count());
+    }
+
+    public function testCreatingNewGameWithSuccess(): void
+    {
+        $gameId = $this->gameRepository->createNewGame(1, 'object');
+        $this->assertGreaterThan(0, $gameId);
     }
 }

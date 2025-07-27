@@ -10,19 +10,30 @@
   </div>
 
   <div class="actions">
-    <button class="new-game-btn">New Game</button>
+    <button data-action="newGame" class="new-game-btn">New Game</button>
+    <button data-action="startGame" class="start-game-btn">Start Game</button>
   </div>
 
-  <table class="game-table">
-    <thead>
-      <tr>
-        <th>Round</th>
-        <th>Question</th>
-        <th>Answer</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <div class="gameboard">
+    <div class="input-wrapper">
+      <input type="text" placeholder="Ask a relevant question!" />
+      <button id="submitQuestionButton" data-action="ask" aria-label="Send">
+        <svg viewBox="0 0 24 24">
+          <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
+        </svg>
+      </button>
+    </div>
+    <table class="game-table">
+      <thead>
+        <tr>
+          <th>Round</th>
+          <th>Question</th>
+          <th>Answer</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
   <table class="score-table">
     <thead>
