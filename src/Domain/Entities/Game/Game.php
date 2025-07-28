@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Entities;
+namespace App\Domain\Entities\Game;
 
 /**
  * Game Entity Class
@@ -18,6 +18,7 @@ class Game
      *
      * @param integer $id
      * @param integer $userId
+     * @param string $category
      * @param string $startDate
      * @param string $endDate
      * @param integer $score
@@ -25,6 +26,7 @@ class Game
     public function __construct(
         private int $id,
         private int $userId,
+        private string $category,
         private string $startDate,
         private string $endDate,
         private int $score
@@ -49,6 +51,16 @@ class Game
     public function getUserId(): int
     {
         return $this->userId;
+    }
+
+    /**
+     * getCategory
+     *
+     * @return string
+     */
+    public function getCategory(): string
+    {
+        return $this->category;
     }
 
     /**

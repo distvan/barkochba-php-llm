@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence;
 
 use App\Domain\Contracts\GameRepository as GameRepositoryInterface;
-use App\Domain\Entities\Game;
+use App\Domain\Entities\Game\Game;
+use App\Domain\Entities\Game\NullGame;
+use App\Domain\Shared\Factory\NullObjectFactory;
 use App\Domain\Game\GameCollection;
 use DateTime;
 use PDO;
@@ -43,8 +45,9 @@ class GameRepository implements GameRepositoryInterface
             $games[] = new Game(
                 id: (int)$row['id'],
                 userId: (int)$row['user_id'],
-                startDate: $row['start_date'],
-                endDate: $row['end_date'],
+                category: $row['category'] ?? '',
+                startDate: $row['start_date'] ?? '',
+                endDate: $row['end_date'] ?? '',
                 score: (int)$row['score']
             );
         }
@@ -69,9 +72,37 @@ class GameRepository implements GameRepositoryInterface
             $stmt->execute();
             return (int)$this->pdo->lastInsertId();
         } catch (PDOException $e) {
-            echo $userId.'-- '.$category;
-            echo $e->getMessage();
             return 0;
         }
+    }
+
+    /**
+     * getLatestUnfinishedGame
+     *
+     * @return Game|NullGame
+     */
+    public function getLatestUnfinishedGame(): Game|NullGame
+    {
+        try {
+            $stmt = $this->pdo->prepare('SELECT * FROM games WHERE end_date IS NULL ORDER BY id DESC LIMIT 1');
+            $stmt->execute();
+            $row = $stmt->fetch();
+            if ($row) {
+                $game = new Game(
+                    id: (int)$row['id'],
+                    userId: (int)$row['user_id'],
+                    category: $row['category'] ?? '',
+                    startDate: $row['start_date'],
+                    endDate: $row['end_date'] ?? '',
+                    score: (int)$row['score']
+                );
+            } else {
+                $game = NullObjectFactory::get(NullGame::class);
+            }
+        } catch (PDOException $e) {
+            $game = NullObjectFactory::get(NullGame::class);
+        }
+
+        return $game;
     }
 }
