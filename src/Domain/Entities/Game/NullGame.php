@@ -9,7 +9,7 @@ use App\Domain\Shared\Entity\NullEntity;
 /**
  * NullQuestion Entity Class
  *
- * @package App\Domain\Entities\Question
+ * @package App\Domain\Entities\Game
  * @author  Istvan Dobrentei <info@dobrenteiistvan.hu>
  * @link    https://www.en.dobrenteiistvan.hu
  */
@@ -31,6 +31,10 @@ class NullGame extends NullEntity
     
     public function getCategory(): string {
         return '';
+    }
+
+    public function getTargetWord(): ?string {
+        return null;
     }
 
     public function getStartDate(): ?string {

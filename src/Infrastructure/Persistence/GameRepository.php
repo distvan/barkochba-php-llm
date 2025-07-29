@@ -7,6 +7,7 @@ namespace App\Infrastructure\Persistence;
 use App\Domain\Contracts\GameRepository as GameRepositoryInterface;
 use App\Domain\Entities\Game\Game;
 use App\Domain\Entities\Game\NullGame;
+use App\Domain\Factories\GameFactory;
 use App\Domain\Shared\Factory\NullObjectFactory;
 use App\Domain\Game\GameCollection;
 use DateTime;
@@ -42,14 +43,7 @@ class GameRepository implements GameRepositoryInterface
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
         while ($row = $stmt->fetch()) {
-            $games[] = new Game(
-                id: (int)$row['id'],
-                userId: (int)$row['user_id'],
-                category: $row['category'] ?? '',
-                startDate: $row['start_date'] ?? '',
-                endDate: $row['end_date'] ?? '',
-                score: (int)$row['score']
-            );
+            $games[] = GameFactory::fromRow($row);
         }
 
         return new GameCollection($games);
@@ -59,6 +53,7 @@ class GameRepository implements GameRepositoryInterface
      * Create a new game
      *
      * @param integer $userId
+     * @param string $category
      * @return integer gameId
      */
     public function createNewGame(int $userId, string $category): int
@@ -88,14 +83,7 @@ class GameRepository implements GameRepositoryInterface
             $stmt->execute();
             $row = $stmt->fetch();
             if ($row) {
-                $game = new Game(
-                    id: (int)$row['id'],
-                    userId: (int)$row['user_id'],
-                    category: $row['category'] ?? '',
-                    startDate: $row['start_date'],
-                    endDate: $row['end_date'] ?? '',
-                    score: (int)$row['score']
-                );
+                $game = GameFactory::fromRow($row);
             } else {
                 $game = NullObjectFactory::get(NullGame::class);
             }

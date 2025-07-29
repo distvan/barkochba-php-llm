@@ -41,6 +41,7 @@ class GameRepositoryTest extends DatabaseTestCase
         $game = $this->gameRepository->getLatestUnfinishedGame();
         $this->assertInstanceOf(Game::class, $game);
         $this->assertEquals($game->getCategory(), 'object');
+        $this->assertEquals($game->getTargetWord(), 'vehicle');
         $this->assertEquals($game->getId(), 2);
         $this->assertEquals($game->getUserId(), 1);
         $this->assertEquals($game->getScore(), 45);
@@ -57,5 +58,6 @@ class GameRepositoryTest extends DatabaseTestCase
         $this->assertNull($game->getEndDate());
         $this->assertEmpty($game->getScore());
         $this->assertEmpty($game->getCategory());
+        $this->assertEmpty($game->getTargetWord());
     }
 }

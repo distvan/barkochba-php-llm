@@ -7,7 +7,7 @@ namespace App\Domain\Entities\Game;
 /**
  * Game Entity Class
  *
- * @package App\Domain\Entities
+ * @package App\Domain\Entities\Game
  * @author  Istvan Dobrentei <info@dobrenteiistvan.hu>
  * @link    https://www.en.dobrenteiistvan.hu
  */
@@ -19,6 +19,7 @@ class Game
      * @param integer $id
      * @param integer $userId
      * @param string $category
+     * @param string $targetWord
      * @param string $startDate
      * @param string $endDate
      * @param integer $score
@@ -27,6 +28,7 @@ class Game
         private int $id,
         private int $userId,
         private string $category,
+        private string $targetWord,
         private string $startDate,
         private string $endDate,
         private int $score
@@ -61,6 +63,16 @@ class Game
     public function getCategory(): string
     {
         return $this->category;
+    }
+
+    /**
+     * getTargetWord
+     *
+     * @return string
+     */
+    public function getTargetWord(): string
+    {
+        return $this->targetWord;
     }
 
     /**

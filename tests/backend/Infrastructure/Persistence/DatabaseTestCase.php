@@ -36,7 +36,7 @@ abstract class DatabaseTestCase extends TestCase
     {
         $this->pdo->exec("INSERT INTO users (id, name) VALUES (1, 'Test')");
         $this->pdo->exec("INSERT INTO games (id, user_id, start_date, end_date, category, score) VALUES (1, 1, '2025-07-21 10:00:15', '2025-07-21 11:10:10', 'object', 40)");
-        $this->pdo->exec("INSERT INTO games (id, user_id, start_date, category, score) VALUES (2, 1, '2025-07-21 12:00:15', 'object', 45)");
+        $this->pdo->exec("INSERT INTO games (id, user_id, start_date, category, target_word, score) VALUES (2, 1, '2025-07-21 12:00:15', 'object', 'vehicle', 45)");
         $this->pdo->exec("INSERT INTO questions (id, game_id, question, answer) VALUES (1, 1, 'Is it live beeing?', 0)");
     }
 
