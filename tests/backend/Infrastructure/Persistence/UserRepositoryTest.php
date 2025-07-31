@@ -5,9 +5,9 @@ namespace Tests\backend\Infrastructure\Persistence;
 use App\Domain\Entities\User\NullUser;
 use App\Domain\Entities\User\User;
 use App\Infrastructure\Persistence\UserRepository;
-use Tests\backend\Infrastructure\Persistence\DatabaseTestCase;
+use Tests\backend\BaseTestCase;
 
-class UserRepositoryTest extends DatabaseTestCase
+class UserRepositoryTest extends BaseTestCase
 {
     public function testFindByUserIdWhenUserExist(): void
     {

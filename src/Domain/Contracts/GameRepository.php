@@ -19,5 +19,5 @@ interface GameRepository
 {
     public function findHighestScoredGames(int $limit = 10): GameCollection;
     public function createNewGame(int $userId, string $category): int;
-    public function getLatestUnfinishedGame(): Game|NullGame;
+    public function getLatestUnfinishedGame(int $userId): Game|NullGame;
 }

@@ -1,27 +1,31 @@
 <?php
 
-namespace Tests\backend\Infrastructure\Persistence;
+namespace Tests\backend;
 
 use PHPUnit\Framework\TestCase;
+use App\Shared\Config\Config;
+use App\Infrastructure\Container\Container;
+use App\Infrastructure\Kernel\Kernel;
+use Nyholm\Psr7Server\ServerRequestCreator;
+use Nyholm\Psr7\Factory\Psr17Factory;
 use PDO;
 
-abstract class DatabaseTestCase extends TestCase
+abstract class BaseTestCase extends TestCase
 {
+    protected $request;
+    protected $container;
     protected PDO $pdo;
-
+    
     protected function setUp(): void
     {
-        $dbHost = $_ENV['MYSQL_HOST'] ?? 'localhost';
-        $dbName = $_ENV['MYSQL_DB'].'_test' ?? 'barkochba_test';
-        $this->pdo = new PDO(
-            "mysql:host=$dbHost;dbname=$dbName;charset=utf8mb4",
-            $_ENV['MYSQL_USER'],
-            $_ENV['MYSQL_PASSWORD'],
-            [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            ]
-        );
+        $path = dirname(__DIR__, 4) . '/src/Shared/Config';
+        $config = new Config($path);
+        $this->container = new Container();
+        $kernel = new Kernel($this->container);
+        $kernel->registerProviders($config->getProviders());
+        $psr17 = new Psr17Factory();
+        $this->request = (new ServerRequestCreator($psr17, $psr17, $psr17, $psr17))->fromGlobals();
+        $this->pdo = $this->container->get(PDO::class);
         $this->deleteAll();
         $this->seed();
         $this->pdo->beginTransaction();

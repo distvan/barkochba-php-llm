@@ -76,10 +76,11 @@ class GameRepository implements GameRepositoryInterface
      *
      * @return Game|NullGame
      */
-    public function getLatestUnfinishedGame(): Game|NullGame
+    public function getLatestUnfinishedGame(int $userId): Game|NullGame
     {
         try {
-            $stmt = $this->pdo->prepare('SELECT * FROM games WHERE end_date IS NULL ORDER BY id DESC LIMIT 1');
+            $stmt = $this->pdo->prepare('SELECT * FROM games WHERE end_date IS NULL AND user_id=:user_id ORDER BY id DESC LIMIT 1');
+            $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
             $stmt->execute();
             $row = $stmt->fetch();
             if ($row) {

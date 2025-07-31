@@ -48,4 +48,14 @@ class QuestionCollection implements IteratorAggregate
     {
         return count($this->questions);
     }
+
+    /**
+     * toArray
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->questions;
+    }
 }

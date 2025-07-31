@@ -16,6 +16,7 @@ declare(strict_types=1);
 use App\Application\Application;
 use App\Http\Controllers\GameHistoryController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\GamePendingController;
 use App\Infrastructure\Container\Container;
 use App\Infrastructure\Http\Dispatcher;
 use App\Infrastructure\Http\Routing\Router;
@@ -24,6 +25,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use App\Http\Controllers\IndexController;
 use App\Infrastructure\Kernel\Kernel;
 use App\Infrastructure\Persistence\GameRepository;
+use App\Infrastructure\Persistence\QuestionRepository;
 use App\Shared\Config\Config;
 use App\Shared\View;
 use Nyholm\Psr7\Factory\Psr17Factory;
@@ -42,7 +44,7 @@ $container = new Container();
 $kernel = new Kernel($container);
 
 //register providers
-$kernel->registerProviders($config->get('providers'));
+$kernel->registerProviders($config->getProviders());
 
 //instantiate components
 $router = new Router();
@@ -63,6 +65,14 @@ $router->add('GET', '/game-history', function(ServerRequestInterface $request) u
 $router->add('POST', '/game-start', function(ServerRequestInterface $request) use($container) {
     $controller = new GameController(
         new GameRepository($container->get(PDO::class))
+    );
+    return $controller($request);
+});
+
+$router->add('GET', '/game-pending', function(ServerRequestInterface $request) use($container) {
+    $controller = new GamePendingController(
+        new GameRepository($container->get(PDO::class)),
+        new QuestionRepository($container->get(PDO::class))
     );
     return $controller($request);
 });

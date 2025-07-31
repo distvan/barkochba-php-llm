@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Shared\Config;
 
-use App\Shared\Exception\ConfigException;
-use UnexpectedValueException;
-
 /**
  * Config class
  *
@@ -14,37 +11,17 @@ use UnexpectedValueException;
  */
 class Config
 {
-    protected string $basePath;
+    private array $providers;
 
-    /**
-     * Construct
-     *
-     * @param string $basePath
-     */
-    public function __construct(string $basePath)
+    public function __construct()
     {
-        $this->basePath = rtrim($basePath, '/');
+        $this->providers = [
+            \App\Infrastructure\Providers\DatabaseServiceProvider::class,
+            \App\Infrastructure\Providers\AIAssistantServiceProvider::class
+        ];
     }
 
-    /**
-     * Get config file
-     *
-     * @param string $file
-     */
-    public function get(string $file): array
-    {
-        $path = "{$this->basePath}/{$file}.php";
-
-        if (!file_exists($path)) {
-            throw new ConfigException("Config file not found: $path");
-        }
-
-        /** @var array $config */
-        $config = require_once $path;
-
-        if (!is_array($config)) {
-            throw new UnexpectedValueException("Config file must return an array: $path");
-        }
-        return $config;
+    public function getProviders() {
+        return $this->providers;
     }
 }

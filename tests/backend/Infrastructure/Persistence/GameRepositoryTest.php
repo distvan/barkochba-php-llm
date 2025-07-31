@@ -6,9 +6,9 @@ use App\Domain\Entities\Game\Game;
 use App\Domain\Entities\Game\NullGame;
 use App\Domain\Game\GameCollection;
 use App\Infrastructure\Persistence\GameRepository;
-use Tests\backend\Infrastructure\Persistence\DatabaseTestCase;
+use Tests\backend\BaseTestCase;
 
-class GameRepositoryTest extends DatabaseTestCase
+class GameRepositoryTest extends BaseTestCase
 {
     private GameRepository $gameRepository;
     public function setUp():void {
@@ -38,7 +38,7 @@ class GameRepositoryTest extends DatabaseTestCase
 
     public function testGetLatestUnfinishedGame(): void
     {
-        $game = $this->gameRepository->getLatestUnfinishedGame();
+        $game = $this->gameRepository->getLatestUnfinishedGame(1);
         $this->assertInstanceOf(Game::class, $game);
         $this->assertEquals($game->getCategory(), 'object');
         $this->assertEquals($game->getTargetWord(), 'vehicle');
@@ -50,7 +50,7 @@ class GameRepositoryTest extends DatabaseTestCase
     public function testGetLatestUnfinishedGameWithEmptyResult(): void
     {
         $this->deleteAll();
-        $game = $this->gameRepository->getLatestUnfinishedGame();
+        $game = $this->gameRepository->getLatestUnfinishedGame(1);
         $this->assertInstanceOf(NullGame::class, $game);
         $this->assertNull($game->getId());
         $this->assertNull($game->getUserId());

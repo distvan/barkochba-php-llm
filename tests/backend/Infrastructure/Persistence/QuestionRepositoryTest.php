@@ -4,9 +4,9 @@ namespace Tests\backend\Infrastructure\Persistence;
 
 use App\Domain\Game\QuestionCollection;
 use App\Infrastructure\Persistence\QuestionRepository;
-use Tests\backend\Infrastructure\Persistence\DatabaseTestCase;
+use Tests\backend\BaseTestCase;
 
-class QuestionRepositoryTest extends DatabaseTestCase
+class QuestionRepositoryTest extends BaseTestCase
 {
     public function testFindQuestionsByGameIdWhenExists(): void
     {
