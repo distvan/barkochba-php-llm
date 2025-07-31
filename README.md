@@ -1,3 +1,5 @@
+![title](/public/img/20-questions-img.jpg)
+
 # Setting up
 
 You need to download a model after docker compose up
