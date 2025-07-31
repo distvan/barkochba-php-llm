@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Domain\Contracts\GameRepository;
+use App\Domain\Contracts\UserRepository;
 use App\Shared\Http\JsonResponseFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,7 +23,8 @@ class GameHistoryController
      * @param GameRepository $gameRepository
      */
     public function __construct(
-        private GameRepository $gameRepository
+        private GameRepository $gameRepository,
+        private UserRepository $userRepository
     ) {
     }
 
@@ -35,6 +37,17 @@ class GameHistoryController
      */
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
-        return JsonResponseFactory::create($this->gameRepository->findHighestScoredGames()->toArray());
+        $result = [];
+        $collection = $this->gameRepository->findHighestScoredGames();
+        foreach ($collection->getIterator() as $item) {
+            $user = $this->userRepository->findById($item->getUserId());
+            $result[] = [
+                'name' => $user->getName(),
+                'start' => $item->getStartDate(),
+                'end' => $item->getEndDate(),
+                'score' => $item->getScore()
+            ];
+        }
+        return JsonResponseFactory::create($result);
     }
 }

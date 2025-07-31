@@ -56,6 +56,6 @@ class GameCollection implements IteratorAggregate
      */
     public function toArray(): array
     {
-        return $this->games;
+        return array_map(fn($game) => $game->toArray(), $this->games);
     }
 }

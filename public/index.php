@@ -26,6 +26,7 @@ use App\Http\Controllers\IndexController;
 use App\Infrastructure\Kernel\Kernel;
 use App\Infrastructure\Persistence\GameRepository;
 use App\Infrastructure\Persistence\QuestionRepository;
+use App\Infrastructure\Persistence\UserRepository;
 use App\Shared\Config\Config;
 use App\Shared\View;
 use Nyholm\Psr7\Factory\Psr17Factory;
@@ -57,7 +58,8 @@ $router->add('GET', '/', function(ServerRequestInterface $request) {
 
 $router->add('GET', '/game-history', function(ServerRequestInterface $request) use($container) {
     $controller = new GameHistoryController(
-        new GameRepository($container->get(PDO::class))
+        new GameRepository($container->get(PDO::class)),
+        new UserRepository($container->get(PDO::class))
     );
     return $controller($request);
 });

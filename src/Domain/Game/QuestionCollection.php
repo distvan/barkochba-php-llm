@@ -56,6 +56,6 @@ class QuestionCollection implements IteratorAggregate
      */
     public function toArray(): array
     {
-        return $this->questions;
+        return array_map(fn($question) => $question->toArray(), $this->questions);
     }
 }
