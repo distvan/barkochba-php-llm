@@ -29,7 +29,7 @@ class GamePendingController
     ) {
     }
 
-    public function __invoke(ServerRequestInterface $request): ResponseInterface
+    public function __invoke(): ResponseInterface
     {
         $defaultUser = 1;
         $game = $this->gameRepository->getLatestUnfinishedGame($defaultUser);

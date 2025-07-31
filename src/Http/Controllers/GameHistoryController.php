@@ -35,7 +35,7 @@ class GameHistoryController
      *
      * @param ServerRequestInterface $request
      */
-    public function __invoke(ServerRequestInterface $request): ResponseInterface
+    public function __invoke(): ResponseInterface
     {
         $result = [];
         $collection = $this->gameRepository->findHighestScoredGames();
