@@ -39,7 +39,7 @@ class GameRepository implements GameRepositoryInterface
     public function findHighestScoredGames(int $limit = 10): GameCollection
     {
         $games = [];
-        $stmt = $this->pdo->prepare('SELECT * FROM games ORDER BY score DESC LIMIT :limit');
+        $stmt = $this->pdo->prepare('SELECT * FROM games WHERE end_date IS NOT NULL ORDER BY score DESC LIMIT :limit');
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
         while ($row = $stmt->fetch()) {

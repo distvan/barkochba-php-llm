@@ -66,4 +66,11 @@ export class ScoreTable extends DashboardElement {
   delete() {
     this.tbody.innerHTML = '';
   }
+
+  /**
+   * Show the element
+   */
+  show() {
+    this.element.style.display = 'table';
+  }
 }
