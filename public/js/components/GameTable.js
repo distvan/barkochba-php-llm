@@ -1,4 +1,3 @@
-import { QuestionService } from '../services/QuestionService.js';
 import { Dashboard } from './Dashboard.js';
 import { DashboardElement } from './DashboardElement.js';
 
@@ -11,21 +10,18 @@ export class GameTable extends DashboardElement {
   /**
    * Constructor
    * @param {Dashboard} dashboard
-   * @param {QuestionService} questionService
    */
-  constructor(dashboard, questionService) {
+  constructor(dashboard) {
     super(dashboard);
-    this.questionService = questionService;
     this.element = this.dashboard.container.querySelector('.game-table');
     this.tbody = this.element.querySelector('tbody');
     this.hide();
   }
 
   /**
-   * Load already asked questions and answers
+   * Show data content (already asked questions and answers)
    */
-  async loadGame() {
-    const data = await this.questionService.getQuestionJsonArray();
+  async loadGame(data) {
     if (Array.isArray(data) && data.length !== 0) {
       let number = 0;
       data.forEach((item) => {
@@ -39,7 +35,7 @@ export class GameTable extends DashboardElement {
         questionCell.textContent = item.question;
 
         const answerCell = document.createElement('td');
-        answerCell.textContent = item.answer;
+        answerCell.textContent = this.#getAnswer(item.answer);
 
         row.appendChild(roundCell);
         row.appendChild(questionCell);
@@ -50,6 +46,9 @@ export class GameTable extends DashboardElement {
     }
   }
 
+  #getAnswer(value) {
+    return value ? 'Yes' : 'No';
+  }
   /**
    * Show the element
    */

@@ -9,29 +9,24 @@ import expect from 'expect';
 
 describe('Category option selector', () => {
   let selector;
-
+  const testCases = ['organism', 'object', 'concept'];
   beforeEach(() => {
     document.body.innerHTML = getMockTemplate();
   });
 
-  it('checks when organism category option is selected', async () => {
+  test.each(testCases)('category option is selected', async (item) => {
     selector = new CategoryOptionSelector(new Dashboard());
-    const optionItem = document.querySelector('.option.organism');
+    const optionItem = document.querySelector('.option.' + item);
     await userEvent.click(optionItem);
-    expect(selector.getSelected()).toBe('organism');
+    expect(selector.getSelected()).toBe(item);
   });
 
-  it('checks when object category option is selected', async () => {
+  it('tests the option selected function', async () => {
+    const item = 'object';
     selector = new CategoryOptionSelector(new Dashboard());
-    const optionItem = document.querySelector('.option.object');
-    await userEvent.click(optionItem);
-    expect(selector.getSelected()).toBe('object');
-  });
-
-  it('checks when concept category option is selected', async () => {
-    selector = new CategoryOptionSelector(new Dashboard());
-    const optionItem = document.querySelector('.option.concept');
-    await userEvent.click(optionItem);
-    expect(selector.getSelected()).toBe('concept');
+    selector.setSelected(item);
+    const selectedItem = document.querySelectorAll('.option.selected');
+    expect(selector.getSelected()).toBe(item);
+    expect(selectedItem.length).toEqual(1);
   });
 });

@@ -12,6 +12,17 @@ export class GamePendingService {
     this.baseUrl = baseUrl;
   }
 
+  /**
+   * getPendingGame
+   * @returns Json {
+   *    result: {
+   *        category: '<selected category name>',
+   *        questions: [
+   *          {id: '', question: '', answer: ''}
+   *        ]
+   *    }
+   * }
+   */
   async getPendingGame() {
     try {
       const response = await fetch(`${this.baseUrl}${this.#endpoint}`, {
@@ -24,11 +35,7 @@ export class GamePendingService {
 
       const data = await response.json();
 
-      if (!Array.isArray(data)) {
-        throw new Error('Expected a JSON array');
-      }
-
-      return data;
+      return data.result;
     } catch (error) {
       console.error('API fetch error:', error);
       return [];

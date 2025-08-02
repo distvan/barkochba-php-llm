@@ -42,6 +42,17 @@ export class CategoryOptionSelector extends DashboardElement {
     return this.selected;
   }
 
+  setSelected(value) {
+    this.options.forEach((option) => {
+      if (option.dataset.value !== value) {
+        option.classList.remove('selected');
+      } else {
+        option.classList.add('selected');
+      }
+    });
+    this.selected = value;
+  }
+
   /**
    * Show the element
    */
