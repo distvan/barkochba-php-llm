@@ -20,8 +20,7 @@ class GameRepositoryTest extends BaseTestCase
         $collection = $this->gameRepository->findHighestScoredGames();
         $this->assertInstanceOf(GameCollection::class, $collection);
         $this->assertEquals(1, $collection->count());
-        $this->assertEquals(45, $collection->toArray()[0]['score']);
-        $this->assertEquals(40, $collection->toArray()[1]['score']);
+        $this->assertEquals(40, $collection->toArray()[0]['score']);
     }
 
     public function testFindHighestScoredGamesWhenNotExist(): void

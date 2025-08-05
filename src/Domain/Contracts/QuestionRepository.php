@@ -16,4 +16,5 @@ use App\Domain\Game\QuestionCollection;
 interface QuestionRepository
 {
     public function findQuestionsByGameId(int $gameId): QuestionCollection;
+    public function saveQuestion(int $gameId, string $question, int $answer): int;
 }

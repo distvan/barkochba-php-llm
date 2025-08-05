@@ -6,6 +6,7 @@ namespace App\Infrastructure\Providers;
 
 use App\Application\Contracts\AIAssistant as AIAssistantInterface;
 use App\Application\Services\AIAssistant as AIAssistantService;
+use App\Domain\Contracts\Storage as StorageInterface;
 use App\Infrastructure\Http\Curl\CurlHttpClient;
 use App\Infrastructure\Http\Curl\CurlRequestOptionsBuilder;
 use App\Infrastructure\Http\Curl\CurlResponseParser;
@@ -22,12 +23,9 @@ class AIAssistantServiceProvider implements ServiceProvider
         if (method_exists($container, 'bind')) {
             $container->bind(
                 AIAssistantInterface::class,
-                function () {
-                    if (empty($_ENV["OPENAI_API_URL"])) {
-                        //local client
-                    }
-                    $apiKey = !empty($_ENV["OPENAI_API_KEY"]) ? $_ENV["OPENAI_API_KEY"] : "";
-                    $apiUrl = !empty($_ENV["OPENAI_API_URL"]) ? $_ENV["OPENAI_API_URL"] : "";
+                function ($container) {
+                    $apiKey = !empty($_ENV["AI_ASSISTANT_KEY"]) ? $_ENV["AI_ASSISTANT_KEY"] : "";
+                    $apiUrl = !empty($_ENV["AI_ASSISTANT_URL"]) ? $_ENV["AI_ASSISTANT_URL"] : "";
                     $factory = new Psr17Factory();
                     $executor = new CurlExecutor();
                     $responseParser = new CurlResponseParser($factory, $factory, $executor);
@@ -37,7 +35,7 @@ class AIAssistantServiceProvider implements ServiceProvider
                         $responseParser
                     );
                     $dependency = new LLMClient($httpClient, $factory, $factory, $apiKey, $apiUrl);
-                    return new AIAssistantService($dependency);
+                    return new AIAssistantService($dependency, $container->get(StorageInterface::class));
                 }
             );
         }

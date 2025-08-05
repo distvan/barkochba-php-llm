@@ -5,6 +5,7 @@ import { EventEmitter } from './EventEmitter.js';
 import { CategoryOptionSelector } from './CategoryOptionSelector.js';
 import { GameHistoryService } from '../services/GameHistoryService.js';
 import { GameStartService } from '../services/GameStartService.js';
+import { QuestionService } from '../services/QuestionService.js';
 import { InputQuery } from './InputQuery.js';
 import { StartGameButton } from './StartGameButton.js';
 
@@ -25,6 +26,7 @@ export class Dashboard extends EventEmitter {
     this.newGameButton = new NewGameButton(this);
     this.startGameButton = new StartGameButton(this);
     this.gameStartService = new GameStartService(this.apiUrl);
+    this.questionService = new QuestionService(this.apiUrl);
     this.inputQuery = new InputQuery(this);
     this.scoreTable = new ScoreTable(this, new GameHistoryService(this.apiUrl));
     this.gameTable = new GameTable(this);
@@ -47,7 +49,12 @@ export class Dashboard extends EventEmitter {
   }
 
   questionAsked(question) {
-    console.log('asked:' + question);
+    this.questionService.askQuestion(question).then((data) => {
+      if (data && data.result === 'saved') {
+        this.gameTable.refresh();
+        this.inputQuery.clear();
+      }
+    });
   }
 
   async startGameClicked() {

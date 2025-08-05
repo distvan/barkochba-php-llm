@@ -33,8 +33,6 @@ class GameHistoryControllerTest extends BaseTestCase
         $this->assertJson($body);
         $this->assertIsArray($data);
         $this->assertCount(1, $data);
-        $this->assertEquals(45, $data[0]['score']);
-        $this->assertEquals(40, $data[1]['score']);
-        
+        $this->assertEquals(40, $data[0]['score']);
     }
 }

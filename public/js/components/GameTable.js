@@ -55,4 +55,8 @@ export class GameTable extends DashboardElement {
   show() {
     this.element.style.display = 'inline-table';
   }
+
+  refresh() {
+    //TODO: Implement refresh logic to reload the game data
+  }
 }

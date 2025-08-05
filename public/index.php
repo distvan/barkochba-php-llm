@@ -14,15 +14,17 @@
 declare(strict_types=1);
 
 use App\Application\Application;
+use App\Domain\Contracts\Storage;
+use App\Application\Contracts\AIAssistant;
 use App\Http\Controllers\GameHistoryController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\GamePendingController;
 use App\Infrastructure\Container\Container;
 use App\Infrastructure\Http\Dispatcher;
 use App\Infrastructure\Http\Routing\Router;
-use App\Shared\Logging\LoggerFactory;
 use Psr\Http\Message\ServerRequestInterface;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\QuestionController;
 use App\Infrastructure\Kernel\Kernel;
 use App\Infrastructure\Persistence\GameRepository;
 use App\Infrastructure\Persistence\QuestionRepository;
@@ -66,7 +68,8 @@ $router->add('GET', '/game-history', function(ServerRequestInterface $request) u
 
 $router->add('POST', '/game-start', function(ServerRequestInterface $request) use($container) {
     $controller = new GameController(
-        new GameRepository($container->get(PDO::class))
+        new GameRepository($container->get(PDO::class)),
+        $container->get(Storage::class)
     );
     return $controller($request);
 });
@@ -74,7 +77,17 @@ $router->add('POST', '/game-start', function(ServerRequestInterface $request) us
 $router->add('GET', '/game-pending', function(ServerRequestInterface $request) use($container) {
     $controller = new GamePendingController(
         new GameRepository($container->get(PDO::class)),
-        new QuestionRepository($container->get(PDO::class))
+        new QuestionRepository($container->get(PDO::class)),
+        $container->get(Storage::class)
+    );
+    return $controller($request);
+});
+
+$router->add('POST', '/question-ask', function(ServerRequestInterface $request) use($container) {
+    $controller = new QuestionController(
+        new QuestionRepository($container->get(PDO::class)),
+        $container->get(Storage::class),
+        $container->get(AIAssistant::class)
     );
     return $controller($request);
 });

@@ -17,7 +17,8 @@ class Config
     {
         $this->providers = [
             \App\Infrastructure\Providers\DatabaseServiceProvider::class,
-            \App\Infrastructure\Providers\AIAssistantServiceProvider::class
+            \App\Infrastructure\Providers\AIAssistantServiceProvider::class,
+            \App\Infrastructure\Providers\SessionStorageProvider::class,
         ];
     }
 

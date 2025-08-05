@@ -36,4 +36,7 @@ export class InputQuery extends DashboardElement {
   show() {
     this.element.style.display = 'flex';
   }
+  clear() {
+    this.input.value = '';
+  }
 }

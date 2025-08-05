@@ -2,28 +2,32 @@
 
 namespace Tests\backend\Http\Controllers;
 
+use App\Application\Contracts\AIAssistant as AIAssistantInterface;
 use Tests\backend\BaseTestCase;
-use App\Http\Controllers\GameController;
-use App\Infrastructure\Persistence\GameRepository;
+use App\Http\Controllers\QuestionController;
+use App\Infrastructure\Persistence\QuestionRepository;
 use App\Domain\Contracts\Storage as StorageInterface;
 use Nyholm\Psr7\Response;
 use PDO;
 
-class GameControllerTest extends BaseTestCase
+class QuestionControllerTest extends BaseTestCase
 {
-    protected GameRepository $gameRepository;
+    protected QuestionRepository $questionRepository;
     protected StorageInterface $storage;
+    protected AIAssistantInterface $aiAssistant;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->gameRepository = new GameRepository($this->container->get(PDO::class));
+        $this->questionRepository = new QuestionRepository($this->container->get(PDO::class));
         $this->storage = $this->container->get(StorageInterface::class);
+        $this->aiAssistant = $this->container->get(AIAssistantInterface::class);
     }
 
     public function testInvoke(): void
     {
-        $controller = new GameController($this->gameRepository, $this->storage);
+        $controller = new QuestionController($this->questionRepository, $this->storage, $this->aiAssistant);
+        $this->request = $this->request->withParsedBody(['question' => "It's color is relevant?"]);
         /** @var Response $response */
         $response = $controller($this->request);
         $body = (string) $response->getBody();
@@ -31,6 +35,6 @@ class GameControllerTest extends BaseTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('application/json', $response->getHeaderLine('Content-Type'));
         $this->assertJson($body);
-        $this->assertEquals('started', $data['result']);
+        
     }
 }

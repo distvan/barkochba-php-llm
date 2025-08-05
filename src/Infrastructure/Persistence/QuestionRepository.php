@@ -47,4 +47,22 @@ class QuestionRepository implements QuestionRepositoryInterface
         
         return new QuestionCollection($questions);
     }
+
+    /**
+     * saveQuestion
+     *
+     * @param integer $gameId
+     * @param string $question
+     * @param integer $answer
+     * @return integer
+     */
+    public function saveQuestion(int $gameId, string $question, int $answer): int
+    {
+        $stmt = $this->pdo->prepare('INSERT INTO questions (game_id, question, answer) VALUES (:game_id, :question, :answer)');
+        $stmt->bindParam(':game_id', $gameId, PDO::PARAM_INT);
+        $stmt->bindParam(':question', $question, PDO::PARAM_STR);
+        $stmt->bindParam(':answer', $answer, PDO::PARAM_INT);
+        $stmt->execute();
+        return (int)$this->pdo->lastInsertId();
+    }
 }

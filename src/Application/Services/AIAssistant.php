@@ -4,7 +4,10 @@ namespace App\Application\Services;
 
 use App\Application\Contracts\AIAssistant as AIAssistantInterface;
 use App\Domain\Contracts\LLMClient;
+use App\Domain\Contracts\Storage as StorageInterface;
+use App\Domain\Shared\Category\CategoryEnum;
 use App\Shared\Exception\InvalidAnswerException;
+use App\Shared\Exception\InvalidGameCategoryException;
 
 /**
  * AIAssistant Service
@@ -21,25 +24,37 @@ class AIAssistant implements AIAssistantInterface
      * @param LLMClient $llmClient
      */
     public function __construct(
-        private LLMClient $llmClient
+        private LLMClient $llmClient,
+        private StorageInterface $storage
     ) {
     }
 
     /**
      * SuggestWord
      *
-     * @param string $categiryId
+     * @param string $category
      * @param string $model name of the applied AI model
      * @return string
-     * @throws InvalidAnswerException
+     * @throws InvalidGameCategoryException
      */
-    public function suggestWord(string $categoryId, $model): string
+    public function suggestWord(string $category, string $model): string
     {
         $prompt = '';
-
-        $response = $this->llmClient->chat($this->createMessages($prompt), $model);
+        switch ($category) {
+            case CategoryEnum::ORGANISM->value:
+                $prompt = self::generateRandomOrganism($category);
+                break;
+            case CategoryEnum::OBJECT->value:
+                $prompt = self::generateRandomObject($category);
+                break;
+            case CategoryEnum::CONCEPT->value:
+                $prompt = self::generateRandomConcept($category);
+                break;
+            default:
+                throw new InvalidGameCategoryException('Invalid category ID:'. $category);
+        }
         
-        return $response;
+        return $this->llmClient->chat($this->createMessages($prompt), $model);
     }
 
     /**
@@ -52,7 +67,10 @@ class AIAssistant implements AIAssistantInterface
      */
     public function askQuestion(string $question, string $model): string
     {
-        $prompt = '';
+        $prompt = $this->generateQuestionPrompt(
+            $this->storage->load('target_word'),
+            $question
+        );
 
         $response = $this->llmClient->chat($this->createMessages($prompt), $model);
         
@@ -92,10 +110,9 @@ class AIAssistant implements AIAssistantInterface
     /**
      * Generate random word in organism category
      *
-     * @param string $categoryId
      * @return string
      */
-    protected static function generateRandomOrganism(string $categoryId): string
+    protected static function generateRandomOrganism(): string
     {
         return <<<EOT
             Pick one random word that is an organism (like "cat", "tree", "mushroom").
@@ -106,10 +123,9 @@ class AIAssistant implements AIAssistantInterface
     /**
      * Generate random word in object category
      *
-     * @param string $categoryId
      * @return string
      */
-    protected static function generateRandomObject(string $categoryId): string
+    protected static function generateRandomObject(): string
     {
         return <<<EOT
             Pick one random word that is an object (like "chair", "toothbrush", "computer").
@@ -120,10 +136,9 @@ class AIAssistant implements AIAssistantInterface
     /**
      * Generate random word in concept category
      *
-     * @param string $categoryId
      * @return string
      */
-    protected static function generateRandomConcept(string $categoryId): string
+    protected static function generateRandomConcept(): string
     {
         return <<<EOT
             Pick one random word that is a concept (like "freedom", "justice", "time").

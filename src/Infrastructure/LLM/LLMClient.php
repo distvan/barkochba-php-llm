@@ -56,9 +56,10 @@ class LLMClient implements LLMClientInterface
             'model' => $model,
             'messages' => $messages,
             'temperature' => $temperature,
+            'stream' => false,
         ];
 
-        $request = $this->requestFactory->createRequest('POST', $this->baseUrl . 'chat/completions')
+        $request = $this->requestFactory->createRequest('POST', $this->baseUrl . 'api/chat')
             ->withHeader('Authorization', 'Bearer ' . $this->apiKey)
             ->withHeader('Content-Type', 'application/json')
             ->withBody($this->streamFactory->createStream(json_encode($payload)));
@@ -78,11 +79,11 @@ class LLMClient implements LLMClientInterface
     {
         $status = $response->getStatusCode();
         $data = json_decode((string) $response->getBody(), true);
-
+    
         if ($status >= 400 || !is_array($data)) {
             throw new LLMException("OpenAI API error ($status): " . json_encode($data));
         }
 
-        return $data['choices'][0]['message']['content'] ?? '';
+        return $data['message']['content'] ?? '';
     }
 }

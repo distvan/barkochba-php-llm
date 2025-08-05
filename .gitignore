@@ -6,3 +6,5 @@ node_modules
 phpDocumentor.phar
 .phpdoc
 .env
+.vscode/launch.json
+.idea

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Domain\Contracts\GameRepository;
+use App\Domain\Contracts\Storage;
 use App\Shared\Http\JsonResponseFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,7 +23,8 @@ class GameController
      * @param GameRepository $gameRepository
      */
     public function __construct(
-        private GameRepository $gameRepository
+        private GameRepository $gameRepository,
+        private Storage $storage
     ) {
     }
 
@@ -38,7 +40,9 @@ class GameController
         $defaultUser = 1;
         $category =  isset($request->getParsedBody()['category']) ? (string)$request->getParsedBody()['category'] : '';
         $result = ['result' => ''];
-        if ($this->gameRepository->createNewGame($defaultUser, $category)) {
+        $gameId = (int)$this->gameRepository->createNewGame($defaultUser, $category);
+        if ($gameId) {
+            $this->storage->save('game_id', $gameId);
             $result['result'] = 'started';
         }
         return JsonResponseFactory::create($result);
