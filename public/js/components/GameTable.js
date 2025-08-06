@@ -23,6 +23,7 @@ export class GameTable extends DashboardElement {
    */
   async loadGame(data) {
     if (Array.isArray(data) && data.length !== 0) {
+      this.tbody.innerHTML = '';
       let number = 0;
       data.forEach((item) => {
         number++;
@@ -54,9 +55,5 @@ export class GameTable extends DashboardElement {
    */
   show() {
     this.element.style.display = 'inline-table';
-  }
-
-  refresh() {
-    //TODO: Implement refresh logic to reload the game data
   }
 }

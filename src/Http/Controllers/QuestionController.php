@@ -42,12 +42,22 @@ class QuestionController
         $gameId = (int)$this->storage->load('game_id');
         $question = isset($request->getParsedBody()['question']) ? (string)$request->getParsedBody()['question'] : '';
         if ($gameId && $question) {
-            $this->questionRepository->saveQuestion(
+            $questionId = $this->questionRepository->saveQuestion(
                 gameId: $gameId,
                 question: $question,
                 answer: $this->getAnswer($this->aiAssistant->askQuestion($question, $_ENV['AI_ASSISTANT_MODEL']))
             );
-            $result = ['result' => 'saved'];
+            if ($questionId > 0) {
+                $result = [
+                    'ok' => true,
+                    'questions' => $this->questionRepository->findQuestionsByGameId($gameId)->toArray()
+                ];
+            }
+        } else {
+            $result = [
+                'ok' => false,
+                'error' => 'Game ID or question is missing.'
+            ];
         }
         
         return JsonResponseFactory::create($result);

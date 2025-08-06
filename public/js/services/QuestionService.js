@@ -5,7 +5,6 @@ export class QuestionService {
    * Constructor for the QuestionService
    * @param {string} baseUrl - The base URL for the API
    * This service is responsible for handling question-related operations.
-   * @param {*} baseUrl
    */
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
@@ -13,8 +12,14 @@ export class QuestionService {
 
   /**
    * Ask a question to the backend service
-   * @param {*} question
-   * @returns
+   * @param {string} question
+   * @returns json {
+   *  ok: boolean,
+   *  error: string|null,
+   *  questions: [
+   *    {id: string, question: string, answer: boolean}
+   *  ]
+   * }
    */
   async askQuestion(question) {
     try {

@@ -50,8 +50,8 @@ export class Dashboard extends EventEmitter {
 
   questionAsked(question) {
     this.questionService.askQuestion(question).then((data) => {
-      if (data && data.result === 'saved') {
-        this.gameTable.refresh();
+      if (data.ok) {
+        this.gameTable.loadGame(data.questions);
         this.inputQuery.clear();
       }
     });
