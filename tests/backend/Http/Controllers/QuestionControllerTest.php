@@ -3,6 +3,7 @@
 namespace Tests\backend\Http\Controllers;
 
 use App\Application\Contracts\AIAssistant as AIAssistantInterface;
+use App\Application\Services\AIAssistant;
 use Tests\backend\BaseTestCase;
 use App\Http\Controllers\QuestionController;
 use App\Infrastructure\Persistence\QuestionRepository;
@@ -10,9 +11,11 @@ use App\Domain\Contracts\Storage as StorageInterface;
 use App\Infrastructure\LLM\LLMClient;
 use Nyholm\Psr7\Response;
 use PDO;
+use Tests\backend\Helpers\MockingTrait;
 
 class QuestionControllerTest extends BaseTestCase
 {
+    use MockingTrait;
     protected QuestionRepository $questionRepository;
     protected StorageInterface $storage;
     protected AIAssistantInterface $aiAssistant;
@@ -28,16 +31,12 @@ class QuestionControllerTest extends BaseTestCase
     public function testInvoke(): void
     {
         $className = get_class($this->container->get(AIAssistantInterface::class));
-        $mock = $this->getMockBuilder($className)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['askQuestion'])
-            ->getMock();
-        $this->aiAssistant = $mock;
-        $this->aiAssistant->expects($this->once())
+        $mock = $this->mock($className);
+        $mock->expects($this->once())
             ->method('askQuestion')
             ->willReturn('yes');
-        
-        $controller = new QuestionController($this->questionRepository, $this->storage, $this->aiAssistant);
+        /** @var AIAssistant $mock */
+        $controller = new QuestionController($this->questionRepository, $this->storage, $mock);
         $this->request = $this->request->withParsedBody(['question' => "It's color is relevant?"]);
         /** @var Response $response */
         $response = $controller($this->request);
