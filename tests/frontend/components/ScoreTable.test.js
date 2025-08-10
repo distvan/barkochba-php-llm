@@ -4,14 +4,14 @@
 import { jest } from '@jest/globals';
 import { ScoreTable } from '../../../public/js/components/ScoreTable.js';
 import { Dashboard } from '../../../public/js/components/Dashboard.js';
-import { GameHistoryService } from '../../../public/js/services/GameHistoryService.js';
+import { GameService } from '../../../public/js/services/GameService.js';
 import { getMockTemplate } from '../helpers/mockTemplates.js';
 
 describe('Score table', () => {
   it('renders rows from service into table', async () => {
     document.body.innerHTML = getMockTemplate();
-    const gameHistoryService = new GameHistoryService('http://fakeurl');
-    jest.spyOn(gameHistoryService, 'getGameDataJsonArray').mockResolvedValue([
+    const gameService = new GameService('http://fakeurl');
+    jest.spyOn(gameService, 'getGameDataJsonArray').mockResolvedValue([
       {
         name: 'Jane Doe',
         start: '2025-07-10 10:00:00',
@@ -25,7 +25,7 @@ describe('Score table', () => {
         score: 42,
       },
     ]);
-    const tableObj = new ScoreTable(new Dashboard(), gameHistoryService);
+    const tableObj = new ScoreTable(new Dashboard(), gameService);
     await tableObj.refresh();
     const rows = document.querySelectorAll('#dashboard .score-table tbody tr');
     const cols = rows[0].querySelectorAll('td');

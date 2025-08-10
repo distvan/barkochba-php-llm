@@ -1,4 +1,4 @@
-import { GameHistoryService } from '../services/GameHistoryService.js';
+import { GameService } from '../services/GameService.js';
 import { Dashboard } from './Dashboard.js';
 import { DashboardElement } from './DashboardElement.js';
 
@@ -11,11 +11,11 @@ export class ScoreTable extends DashboardElement {
   /**
    * Constructor
    * @param {Dashboard} dashboard
-   * @param {GameHistoryService} gameHistoryService
+   * @param {GameService} gameService
    */
-  constructor(dashboard, gameHistoryService) {
+  constructor(dashboard, gameService) {
     super(dashboard);
-    this.gameHistoryService = gameHistoryService;
+    this.gameService = gameService;
     this.element = this.dashboard.container.querySelector('.score-table');
     this.tbody = this.element.querySelector('tbody');
     this.hide();
@@ -25,7 +25,7 @@ export class ScoreTable extends DashboardElement {
    * Regenerate score table tbody
    */
   async refresh() {
-    const data = await this.gameHistoryService.getGameDataJsonArray();
+    const data = await this.gameService.getGameDataJsonArray();
     if (Array.isArray(data) && data.length !== 0) {
       this.delete();
       this.show();

@@ -1,4 +1,4 @@
-import { GamePendingService } from './services/GamePendingService.js';
+import { GameService } from './services/GameService.js';
 import { Dashboard } from './components/Dashboard.js';
 
 const context = {};
@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', onDOMReady.bind(context));
 
 async function onDOMReady() {
   let dashboard = new Dashboard();
-  const pendingGameService = new GamePendingService(dashboard.getApiUrl());
-  let data = await pendingGameService.getPendingGame();
+  const gameService = new GameService(dashboard.getApiUrl());
+  let data = await gameService.getPendingGame();
   if (Array.isArray(data.questions) && data.questions.length === 0) {
     dashboard.scoreTable.refresh();
   } else {
