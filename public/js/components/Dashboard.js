@@ -8,6 +8,7 @@ import { GameStartService } from '../services/GameStartService.js';
 import { QuestionService } from '../services/QuestionService.js';
 import { InputQuery } from './InputQuery.js';
 import { StartGameButton } from './StartGameButton.js';
+import { GuessModal } from './GuessModal.js';
 
 /**
  * Represents the Dashboard controller class
@@ -31,6 +32,8 @@ export class Dashboard extends EventEmitter {
     this.scoreTable = new ScoreTable(this, new GameHistoryService(this.apiUrl));
     this.gameTable = new GameTable(this);
     this.optionSelector = new CategoryOptionSelector(this);
+    this.guessModal = new GuessModal(this);
+    this.on('guessSubmitted', (guess) => this.guessSubmitted(guess));
     this.on('newGameClicked', () => this.newGameClicked());
     this.on('questionAsked', (question) => this.questionAsked(question));
     this.on('startGameClicked', () => this.startGameClicked());
@@ -55,6 +58,10 @@ export class Dashboard extends EventEmitter {
         this.inputQuery.clear();
       }
     });
+  }
+
+  guessSubmitted(guess) {
+    //TODO: Implement the logic to handle the guess submission
   }
 
   async startGameClicked() {

@@ -23,6 +23,9 @@
         </svg>
       </button>
     </div>
+    <button id="iKnowButton" data-action="iKnow" aria-label="I know">
+      <span class="btn__text">I know It!</span>
+    </button>
     <table class="game-table">
       <thead>
         <tr>
@@ -47,4 +50,20 @@
     </thead>
     <tbody></tbody>
   </table>
+
+  <div id="guessModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Guess the answer</h2>
+      <p>What is your guess?</p>
+      <input
+        type="text"
+        id="guessInput"
+        placeholder="Type your guess here..."
+      />
+      <button id="submitGuessButton" data-action="submitGuess">
+        Submit Guess
+      </button>
+    </div>
+  </div>
 </div>
