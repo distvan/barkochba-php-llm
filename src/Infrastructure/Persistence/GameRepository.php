@@ -54,16 +54,19 @@ class GameRepository implements GameRepositoryInterface
      *
      * @param integer $userId
      * @param string $category
+     * @param string $targetWord
+     * @throws PDOException
      * @return integer gameId
      */
-    public function createNewGame(int $userId, string $category): int
+    public function createNewGame(int $userId, string $category, string $targetWord): int
     {
         $now = new DateTime();
         try{
-            $stmt = $this->pdo->prepare('INSERT INTO games (user_id, start_date, category) VALUES (:user_id, :start_date, :category)');
+            $stmt = $this->pdo->prepare('INSERT INTO games (user_id, start_date, category, target_word) VALUES (:user_id, :start_date, :category, :target_word)');
             $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
             $stmt->bindValue(':start_date', $now->format('Y-m-d H:i:s'), PDO::PARAM_STR);
             $stmt->bindValue(':category', $category, PDO::PARAM_STR);
+            $stmt->bindValue(':target_word', $targetWord, PDO::PARAM_STR);
             $stmt->execute();
             return (int)$this->pdo->lastInsertId();
         } catch (PDOException $e) {
@@ -93,5 +96,27 @@ class GameRepository implements GameRepositoryInterface
         }
 
         return $game;
+    }
+
+    /**
+     * End the game
+     *
+     * @param integer $gameId
+     * @param integer $score
+     * @return boolean
+     */
+    public function endGame(int $gameId, int $score): bool
+    {
+        $now = new DateTime();
+        try {
+            $stmt = $this->pdo->prepare('UPDATE games SET end_date=:end_date, score=:score WHERE id=:game_id');
+            $stmt->bindValue(':end_date', $now->format('Y-m-d H:i:s'), PDO::PARAM_STR);
+            $stmt->bindValue(':score', $score, PDO::PARAM_INT);
+            $stmt->bindValue(':game_id', $gameId, PDO::PARAM_INT);
+            return $stmt->execute();
+        }
+        catch (PDOException $e) {
+            return false;
+        }
     }
 }

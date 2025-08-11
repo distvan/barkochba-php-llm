@@ -33,7 +33,7 @@ class GameRepositoryTest extends BaseTestCase
 
     public function testCreatingNewGameWithSuccess(): void
     {
-        $gameId = $this->gameRepository->createNewGame(1, 'object');
+        $gameId = $this->gameRepository->createNewGame(1, 'object', 'vehicle');
         $this->assertGreaterThan(0, $gameId);
     }
 

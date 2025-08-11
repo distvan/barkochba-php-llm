@@ -18,6 +18,7 @@ use App\Domain\Game\GameCollection;
 interface GameRepository
 {
     public function findHighestScoredGames(int $limit = 10): GameCollection;
-    public function createNewGame(int $userId, string $category): int;
+    public function createNewGame(int $userId, string $category, string $targetWord): int;
     public function getLatestUnfinishedGame(int $userId): Game|NullGame;
+    public function endGame(int $gameId, int $score): bool;
 }

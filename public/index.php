@@ -69,7 +69,8 @@ $router->add('GET', '/game-history', function(ServerRequestInterface $request) u
 $router->add('POST', '/game-start', function(ServerRequestInterface $request) use($container) {
     $controller = new GameController(
         new GameRepository($container->get(PDO::class)),
-        $container->get(Storage::class)
+        $container->get(Storage::class),
+        $container->get(AIAssistant::class)
     );
     return $controller($request);
 });
